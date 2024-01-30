@@ -1,0 +1,87 @@
+openapi: '3.0.2'
+
+info:
+  title: Customer-API
+  description: This is our customer api endpoint
+  version: '1.0'
+  contact:
+    name: 'Customer-API Co'
+    email: 'contactus@company.com'
+
+servers:
+  - url: https://api.server.test/v1
+
+paths:
+  /customer:
+    post:
+      description: Create customers
+      summary: create customer for given requests
+      operationId: createCustomer
+      requestBody:
+        description: save customer info in database
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/Customer"
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server Error
+
+  /customer/{id}:
+    get:
+      description: Get Customer
+      summary: Get customer details for a given ID
+      operationId: getCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: "#components/schemas/Customer"
+          '400':
+            description: Bad Request
+          '404':
+            description: Not Found
+          '500':
+            description: Internal Server Error
+
+components:
+  schemas:
+    Customer:
+      description: This is customer model/schema
+      type: object
+      required:
+        - "customerId"
+      properties:
+        customerName:
+          type: string
+          example: Ser Si
+        customerAddress:
+          type: string
+          example: Ser Si
+        customerId:
+          type: object
+          description: Id of customer
+          example: 12345
+          minLength: 5
+          maxLength: 10
+
+
+  # /test:
+  #   get:
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#components/schemas/Customer'
