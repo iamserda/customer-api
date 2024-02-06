@@ -1,15 +1,96 @@
 openapi: '3.0.2'
 
 info:
-  title: API Title
+  title: Customer API
   version: '1.0'
+  description: lorem ipsum
+  contact:
+    name: Accenture Training
+    email: email@example.coom
+    url: http://example.com
 
 servers:
-  - url: https://api.server.test/v1
+  - url: https://localhost:8800/v1
+
+tags:
+  - name: Customer API
 
 paths:
-  /test:
+  /customer/{id}:
     get:
+      summary: Fetch a given customer's detail from the service.
+      description: Get Customer info based on it's Id
+      operationId: getCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+              '200':
+                description: OK
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Customer'
+              '400':
+                description: Bad Request
+              '404':
+                description: Not Found
+              '500':
+                description: Internal Server Error
+      tags:
+        - 'Customer API'
+
+  /customer:
+    post:
+      description: Create Customer
+      summary: Create customer for given request
+      operationId: createCustomer
+      requestBody:
+        description: save customer info into the database
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '500':
+          description: Internal Server Error
+      tags:
+        - 'Customer API'
+
+components:
+  schemas:
+    Customer:
+      description: lorem ipsum
+      type: object
+      required:
+        - 'customerId'
+      properties:
+        customerId:
+          type: string
+          description: Id of the customer
+          example: '12345'
+          minLength: 5
+          maxLength: 8
+        customerFirstName:
+          type: string
+          description: Customer's First name.
+          example: John
+        customerLastName:
+          type: string
+          description: Customer's Last name.
+          example: Frame
+        customerAddress:
+          type: string
+          example: '12 Avenue ABC, New York, NY 10003'
+        officeCode:
+          type: number
+          example: 0045
